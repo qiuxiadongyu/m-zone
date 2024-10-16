@@ -1,7 +1,7 @@
 //.vitepress/config.mts
 import { defineConfig } from 'vitepress'
 export default defineConfig({
-    title: '前端工具', //标题
+    title: 'M-ZONE', //标题
     description: '开发日常使用中所用到的日常提效工具、插件等', //描述
     lang: 'zh-CN', //语言类型
     lastUpdated: true, //最近更新时间
@@ -13,7 +13,17 @@ export default defineConfig({
     },
     themeConfig: {
         logo: '/logo.png', //显示在导航栏中网站标题之前的徽标文件。接受路径字符串或对象来为亮/暗模式设置不同的徽标。
-        nav: [{ text: 'Home', link: '/' }],
+        nav: [
+            {
+                text: 'Home', items: [
+                    { text: '首页', link: 'https://www.baidu.com/' },
+                    { text:'makedown示例', link: '/markdown-example' },
+                ],
+            },
+            {
+                text: '示例', link: '/markdown-example'
+            }
+        ],
         sidebar: [],
         /* 右侧大纲配置 */
         outline: {
@@ -27,17 +37,19 @@ export default defineConfig({
         },
         socialLinks: [
             //显示带有图标的社交帐户链接
-            { icon: 'github', link: 'https://github.com/lyxdream/tool-kit' }
+            { icon: 'github', link: 'https://github.com/qiuxiadongyu' },
+            { icon: 'twitter', link: 'https://github.com/qiuxiadongyu' },
+            { icon: 'youtube', link: 'https://github.com/qiuxiadongyu' },
         ],
         darkModeSwitchLabel: '模式', //可用于自定义深色模式开关标签。该标签仅显示在移动视图中。
         lastUpdatedText: '上次更新', //上次更新文案
         // 本地搜索
         search: {
-          provider: 'local'
+            provider: 'local'
         },
         footer: { //页脚
-          message: 'Released under the MIT License.',
-          copyright: 'Copyright © 2019-present yx'
+            message: 'Released under the MIT License.',
+            copyright: 'Copyright © 2019-present yx'
         },
     }
     //.vitepress/config.mts
