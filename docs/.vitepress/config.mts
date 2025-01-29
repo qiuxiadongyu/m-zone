@@ -1,5 +1,6 @@
 //.vitepress/config.mts
 import { defineConfig } from 'vitepress'
+import { sidebar, nav } from './configs'
 export default defineConfig({
     title: 'M-ZONE', //标题
     description: '开发日常使用中所用到的日常提效工具、插件等', //描述
@@ -13,18 +14,20 @@ export default defineConfig({
     },
     themeConfig: {
         logo: '/logo.png', //显示在导航栏中网站标题之前的徽标文件。接受路径字符串或对象来为亮/暗模式设置不同的徽标。
-        nav: [
-            {
-                text: 'Home', items: [
-                    { text: '首页', link: 'https://www.baidu.com/' },
-                    { text:'makedown示例', link: '/markdown-example' },
-                ],
-            },
-            {
-                text: '示例', link: '/markdown-example'
-            }
-        ],
-        sidebar: [],
+        nav,
+        sidebar,
+        // nav: [
+        //     {
+        //         text: 'Home', items: [
+        //             { text: '首页', link: 'https://www.baidu.com/' },
+        //             { text:'makedown示例', link: '/markdown-example' },
+        //         ],
+        //     },
+        //     {
+        //         text: '示例', link: '/markdown-example'
+        //     }
+        // ],
+        // sidebar: [],
         /* 右侧大纲配置 */
         outline: {
             level: 'deep',

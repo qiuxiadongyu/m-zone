@@ -4,8 +4,8 @@ layout: home
 pageClass: m-home-layout
 
 hero:
-    name: '前端工具'
-    text: '一个有趣的前端趣味工具仓库'
+    name: '闲事摘要'
+    text: '记录自己想记录的任何东西'
     tagline: 日常开发所用到的日常提效工具，持续开发中...
     image:
         src: /logo.png
