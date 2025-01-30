@@ -1,12 +1,94 @@
-on: push
+# on: push
+
+# jobs:
+#   job1:
+#     runs-on: ubuntu-latest
+#     steps:
+#       - run: pwd
+#       - run: ls
+#   job2:
+#     runs-on: windows-latest
+#     steps:
+#       - run: node --version
+
+
+# .github/workflows/deploy.yml
+
+name: Deploy VitePress
+
+on:
+  # 每当 push 到 main 分支时触发部署
+  # push: 当有提交被推送到仓库时。
+  # pull_request: 当有 Pull Request 被创建或更新时。
+  # schedule: 根据定时计划执行。
+  # release: 当创建了一个新的 Release 时。
+  # workflow_dispatch: 允许手动触发工作流程。
+  push:
+    branches: [master]
+    # 只在下列路径变更时触发
+    paths:
+      - 'docs/**'
+      - 'package.json'
+      - '.github/**'
+  # 手动触发部署
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
 
 jobs:
-  job1:
+  # 构建工作
+  build:
     runs-on: ubuntu-latest
     steps:
-      - run: pwd
-      - run: ls
-  job2:
-    runs-on: windows-latest
+      # 拉取代码
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          # “最近更新时间” 等 git 日志相关信息，需要拉取全部提交记录
+          fetch-depth: 0
+      # 安装 pnpm
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v3
+        with:
+          version: 8
+      # 设置 node 版本
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+          cache: pnpm
+      # 此操作有助于支持从任何静态站点生成器部署到 GitHub Pages
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
+      # 安装依赖
+      - name: Install dependencies
+        run: pnpm install
+      # 打包静态文件
+      - name: Build
+        run: pnpm docs:build
+      # 上传工件
+      # 此操作有助于支持从任何静态站点生成器部署到 GitHub Pages
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./docs/.vitepress/dist # 打包后的文件位置
+  # 部署工作
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    needs: build
+    runs-on: ubuntu-latest
+    name: Deploy
     steps:
-      - run: node --version
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
+        # 使用了deploy-pages动作的第4版本，这是专门用于将工件部署到GitHub Pages。
