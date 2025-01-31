@@ -7,7 +7,7 @@ export default defineConfig({
     lang: 'zh-CN', //语言类型
     lastUpdated: true, //最近更新时间
     cleanUrls: true, //VitePress 将从 URL 中删除尾随.html
-    base: '/',
+    base: '/m-zone/',
     /* markdown 配置 */
     markdown: {
         lineNumbers: true
