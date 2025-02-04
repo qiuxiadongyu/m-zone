@@ -16,18 +16,6 @@ export default defineConfig({
         logo: '/logo.png', //显示在导航栏中网站标题之前的徽标文件。接受路径字符串或对象来为亮/暗模式设置不同的徽标。
         nav,
         sidebar,
-        // nav: [
-        //     {
-        //         text: 'Home', items: [
-        //             { text: '首页', link: 'https://www.baidu.com/' },
-        //             { text:'makedown示例', link: '/markdown-example' },
-        //         ],
-        //     },
-        //     {
-        //         text: '示例', link: '/markdown-example'
-        //     }
-        // ],
-        // sidebar: [],
         /* 右侧大纲配置 */
         outline: {
             level: 'deep',
@@ -41,6 +29,7 @@ export default defineConfig({
         socialLinks: [
             //显示带有图标的社交帐户链接
             { icon: 'github', link: 'https://github.com/qiuxiadongyu' },
+            { icon: 'facebook', link: 'https://github.com/qiuxiadongyu' },
             { icon: 'twitter', link: 'https://github.com/qiuxiadongyu' },
             { icon: 'youtube', link: 'https://github.com/qiuxiadongyu' },
         ],

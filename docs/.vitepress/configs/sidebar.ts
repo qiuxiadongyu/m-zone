@@ -1,9 +1,13 @@
 ///docs/.vitepress/configs/sidebar.ts
-//侧边栏
+// 侧边栏部分
 import type { DefaultTheme } from 'vitepress'
 
 export const sidebar: DefaultTheme.Config['sidebar'] = {
     '/webrtc/': [
+        {
+            text: '简介',
+            link: '/webrtc/index'
+        },
         {
             text: 'webrtc',
             collapsed: false,
@@ -15,10 +19,20 @@ export const sidebar: DefaultTheme.Config['sidebar'] = {
             ]
         }
     ],
-    '/vscode-plugin/': [
+    '/other/': [
         {
-            text: 'vscode-plugin',
-            items: [{ text: 'index', link: '/vscode-plugin/index' }]
+            text: '简介',
+            link: '/webrtc/index'
+        },
+        {
+            text: 'ohter',
+            collapsed: false,
+            items: [
+                {
+                    text: 'index', 
+                    link: '/ohter/index' 
+                }
+            ]
         }
     ]
 }

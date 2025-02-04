@@ -16,19 +16,20 @@ hero:
           link: /webrtc/index
         - theme: alt
           text: GitHub
-          link: https://github.com/lyxdream/tool-kit
+          link: https://github.com/qiuxiadongyu/m-zone
 
 features:
     - icon: 📖
-      title: webRTC
-      details: 纯前端实现录屏、拍照<br />音视频通话<br/>虚拟背景，信令服务器
-      link: https://lyxdream.github.io/tool-kit/webrtc/index
-      linkText: 常用趣味工具
+      title: 前端相关
+      details: 一些前端开发过程相关的知识总结<br />包括以下使用技巧与经验与工具介绍
+      link: /webrtc/index
+      linkText: 杂七杂八的东西
 
     - icon: 🧰
-      title: vscode插件
-      details: vscode录屏插件<br />在vscode安装插件即可实现屏幕录制并下载
-      link: https://lyxdream.github.io/tool-kit/vscode-plugin/index
-      linkText: 录屏插件
+      title: 其他相关
+      details: 一些其他想记录的东西
+      # link: https://lyxdream.github.io/tool-kit/vscode-plugin/index
+      link: /other/index
+      linkText: 其他知识
 ---
 
