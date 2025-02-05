@@ -40,3 +40,102 @@
 * **分支管理**
 
 ## github项目实现自动部署
+
+>  需要使用github上的Actions功能，可以实现很多自动化的操作，这里只从构建 VitePress 站点并将其部署到GitHub Pages的方面去说
+
+>  工作流是通过一个名为 `workflow` 的 YAML 文件来定义的。这个文件通常存放在仓库.github/workflows 目录下。
+>
+> 1. workflow （工作流程）：持续集成一次运行的过程，就是一个 workflow。
+> 2. job （任务）：一个 workflow 由一个或多个 jobs 构成，含义是一次持续集成的运行，可以完成多个任务。
+> 3. step（步骤）：每个 job 由多个 step 构成，一步步完成。
+> 4. action （动作）：每个 step 可以依次执行一个或多个命令（action）。
+
+* 需要在项目的目录中新建一个.github文件夹，并在其中新建一个工作流文件，比如新建一个deployRun.yml的文件
+* 在github上对应仓库settings处左侧找到Page选项点击，Build and deployment里的Source选择Delay from a branch，并选择master分支
+* 编写deployRun.yml文件(以下为构建 VitePress 站点并将其部署到GitHub Pages例子)
+
+```yaml
+name: Deploy VitePress
+
+on:
+  # 每当 push 到 master 分支时触发部署
+  # push: 当有提交被推送到仓库时。
+  # pull_request: 当有 Pull Request 被创建或更新时。
+  # schedule: 根据定时计划执行。
+  # release: 当创建了一个新的 Release 时。
+  # workflow_dispatch: 允许手动触发工作流程。
+  push:
+    # 在针对 `master` 分支的推送上运行。如果你
+    # 使用 `main` 分支作为默认分支，请将其更改为 `main`
+    branches: [master]
+    # 只在下列路径变更时触发
+    paths:
+      - 'docs/**'
+      - 'package.json'
+      - '.github/**'
+  # 手动触发部署
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  # 构建工作
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      # 拉取代码
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          # “最近更新时间” 等 git 日志相关信息，需要拉取全部提交记录
+          fetch-depth: 0
+      # 安装 pnpm
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v3
+        with:
+          version: 8
+      # 设置 node 版本
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+          cache: pnpm
+      # 此操作有助于支持从任何静态站点生成器部署到 GitHub Pages
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
+      # 安装依赖
+      - name: Install dependencies
+        run: pnpm install
+      # 打包静态文件
+      - name: Build
+        run: pnpm docs:build
+      # 上传工件
+      # 此操作有助于支持从任何静态站点生成器部署到 GitHub Pages
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./docs/.vitepress/dist # 打包后的文件位置
+  # 部署工作
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    needs: build
+    runs-on: ubuntu-latest
+    name: Deploy
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
+        # 使用了deploy-pages动作的第4版本，这是专门用于将工件部署到GitHub Pages。
+```
+
+这样每次master分支有更新时，都会自动重新将项目进行部署到github pages里。
+
