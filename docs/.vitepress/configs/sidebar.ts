@@ -9,20 +9,28 @@ export const sidebar: DefaultTheme.Config['sidebar'] = {
             link: '/webrtc/index'
         },
         {
-            text: 'webrtc',
+            text: '实践经验',
             collapsed: false,
             items: [
                 {
-                    text: 'index',
-                    link: '/webrtc/index'
+                    text: 'vitepress搭建相关',
+                    link: '/webrtc/front-knowledge/vitepress-text'
+                },
+                {
+                    text: 'git相关',
+                    link: '/webrtc/front-knowledge/git-text'
+                },
+                {
+                    text: '截图相关',
+                    link: '/webrtc/front-knowledge/screenshot'
                 }
             ]
-        }
+        },
     ],
     '/other/': [
         {
             text: '简介',
-            link: '/webrtc/index'
+            link: '/ohter/index'
         },
         {
             text: 'ohter',
