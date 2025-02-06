@@ -30,15 +30,15 @@ export const sidebar: DefaultTheme.Config['sidebar'] = {
     '/other/': [
         {
             text: '简介',
-            link: '/ohter/index'
+            link: '/other/index'
         },
         {
-            text: 'ohter',
+            text: 'other',
             collapsed: false,
             items: [
                 {
-                    text: 'index', 
-                    link: '/ohter/index' 
+                    text: 'QQ机器人', 
+                    link: '/other/qqRobot' 
                 }
             ]
         }
