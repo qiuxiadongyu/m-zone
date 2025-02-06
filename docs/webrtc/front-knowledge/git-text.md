@@ -16,11 +16,38 @@
    git init
    ```
 
-3. 关联远程仓库
+3. 将本地文件添加到暂存区
+
+   ```
+   git add .
+   ```
+   
+   
+   
+4. 提交暂存区的文件到本地仓库
+
+   ```
+   git commit -m "Initial commit"
+   ```
+
+   “Initial commit” 是提交信息，你可根据实际情况修改，该信息用于描述此次提交的内容。
+
+5. 关联远程仓库
 
    ```
    git remote add origin https://github.com/qiuxiadongyu/m-zone.git //关联远程仓库,后面的是仓库地址，如果创建的是是空仓库的话或有对应的命令提示，也可以在code clone上看到
    ```
+
+
+6. 推送本地仓库的内容到 GitHub 远程仓库
+
+   执行以下命令将本地的 `main` 分支（或 `master` 分支，具体取决于你的本地分支名称）推送到远程仓库的 `main` 分支：
+
+   ```
+   git push -u origin main
+   ```
+
+   
 
 > PS：如果你创建的库（repository）在创建时没有取消默认的README.md，可能会出现本地分支和远程分支不一致推不了的情况，这样的话可以直接使用git clone拉取项目，然后直接修改对应分支（一般默认是master或main），将项目的内容复制过去然后提交推送
 
