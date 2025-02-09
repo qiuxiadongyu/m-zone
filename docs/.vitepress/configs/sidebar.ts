@@ -39,6 +39,14 @@ export const sidebar: DefaultTheme.Config['sidebar'] = {
                 {
                     text: 'QQ机器人', 
                     link: '/other/qqRobot' 
+                },
+                {
+                    text: 'docker相关', 
+                    link: '/other/docker' 
+                },
+                {
+                    text: 'nginx相关', 
+                    link: '/other/nginx' 
                 }
             ]
         }
