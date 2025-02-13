@@ -104,3 +104,57 @@ docker rm nginx
 docker rm -f nginx
 ```
 
+查看镜像
+
+```
+docker images
+```
+
+删除镜像(此处df1为dockers images看到的所要删除镜像的`IMAGE ID`前三位)
+
+```
+docker rmi df1
+```
+
+
+
+
+
+## 制作镜像运行容器
+
+这里以springboot打包出来的jar包使用docker创建容器运行为例
+
+1. 在jar包的同级目录下创建名为Dockerfile文件，编写内容
+
+   ```
+   # 使用基于 JDK 17 的官方 OpenJDK 镜像作为基础镜像
+   FROM openjdk:17
+   
+   # 设置工作目录
+   WORKDIR /app
+   
+   # 将打包好的 JAR 文件复制到工作目录
+   COPY your-project.jar /app/your-project.jar
+   
+   # 暴露 Spring Boot 应用默认的端口，根据实际情况修改
+   EXPOSE 8080
+   
+   # 定义启动命令
+   CMD ["java", "-jar", "your-project.jar"]
+   ```
+
+   
+
+2. 构建docker镜像(不要漏了最后的’.‘，表示 Dockerfile 所在的当前目录)
+
+   ```
+   docker build -t your-project-image:latest .
+   ```
+
+3. 运行刚才部署的容器
+
+   ```
+   docker run -d -p 8080:8080 --name your-project-container your-project-image:latest
+   ```
+
+   

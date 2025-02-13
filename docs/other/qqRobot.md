@@ -21,6 +21,8 @@
 
 
 
+
+
 ## 后端服务部分（简单实现）
 
 后端使用Shiro 基于OneBot协议的QQ机器人开发框架
@@ -131,9 +133,19 @@ public class TestPlugin extends BotPlugin {
 
 ## 机器人完善
 
+这边尽量根据OneBot 11的标准去开发
+
+
+
 ### 问答聊天 TODO
 
+先不考虑上下文（没想好历史记录存在哪里，获取历史记录的接口还没完全弄懂）
+
+
+
 ### 图片生成 TODO
+
+
 
 ### 查找 TODO
 
