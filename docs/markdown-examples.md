@@ -8,7 +8,7 @@ hero:
     text: '一个有趣的前端趣味工具仓库'
     tagline: 日常开发所用到的日常提效工具，持续开发中...
     image:
-        src: /logo.png
+        src: /logo-nobg.png
         alt: 工具包
     actions:
         - theme: brand

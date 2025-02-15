@@ -13,7 +13,7 @@ export default defineConfig({
         lineNumbers: true
     },
     themeConfig: {
-        logo: '/logo.png', //显示在导航栏中网站标题之前的徽标文件。接受路径字符串或对象来为亮/暗模式设置不同的徽标。
+        logo: '/logo-nobg.png', //显示在导航栏中网站标题之前的徽标文件。接受路径字符串或对象来为亮/暗模式设置不同的徽标。
         nav,
         sidebar,
         /* 右侧大纲配置 */

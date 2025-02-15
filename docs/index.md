@@ -8,7 +8,7 @@ hero:
     text: '记录自己想记录的任何东西'
     tagline: 日常开发所用到的日常提效工具，持续开发中...
     image:
-        src: /logo.png
+        src: /logo-nobg.png
         alt: 工具包
     actions:
         - theme: brand
