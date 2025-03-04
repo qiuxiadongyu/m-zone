@@ -102,7 +102,7 @@ http {
         server_name  clay-zone.online www.clay-zone.online;  # 域名或IP地址
 
         # 根目录和默认文件
-        root   /var/www/html;  # 网站根目录
+        root   /usr/share/nginx/html;  # 网站根目录
         index  index.html index.htm;  # 默认索引文件
 
         # 静态文件处理
@@ -161,3 +161,222 @@ http {
 }
 ```
 
+## 直接安装
+
+直接安装的方法就暂时就不赘述了
+
+## 相关知识
+
+sudo systemctl start/restart/enable/stop nginx
+
+
+
+`^~` 修饰符用于前缀匹配，当一个 `location` 块使用了 `^~` 修饰符时，表示如果请求的 URI 以该 `location` 块指定的前缀开头，Nginx 会立即停止对后续 `location` 块的正则表达式匹配检查，直接使用该 `location` 块来处理请求。
+
+
+
+### 不需要使用 `rewrite` 的情况
+
+#### 1. 仅进行简单的反向代理
+
+```
+server {
+    listen 80;
+    server_name example.com;
+
+    location / {
+        proxy_pass http://backend_server;
+    }
+}
+```
+
+
+
+如果只是将客户端的请求简单地转发到后端服务器，并且不需要对请求的 URI 进行修改，那么就不需要使用 `rewrite` 指令。
+
+#### 2. 多层代理仅做端口或 IP 转发
+
+```
+# 第一层代理
+server {
+    listen 80;
+    server_name example.com;
+
+    location / {
+        proxy_pass http://second_proxy_server;
+    }
+}
+
+# 第二层代理
+server {
+    listen 8080;
+    server_name second_proxy_server;
+
+    location / {
+        proxy_pass http://backend_server;
+    }
+}
+```
+
+
+
+当多层 Nginx 代理只是将请求从一个端口或 IP 转发到另一个端口或 IP，而不改变请求的路径时，也不需要 `rewrite`。
+
+### 需要使用 `rewrite` 的情况
+
+#### 1. 修改请求 URI
+
+```
+server {
+    listen 80;
+    server_name example.com;
+
+    location /old_path/ {
+        rewrite ^/old_path/(.*)$ /new_path/$1 break;
+        proxy_pass http://backend_server;
+    }
+}
+```
+
+
+
+如果在多层代理过程中需要对请求的 URI 进行修改，例如去除、添加或替换部分路径，就需要使用 `rewrite` 指令。
+
+#### 2. 实现 URL 重定向
+
+```
+server {
+    listen 80;
+    server_name example.com;
+
+    if ($http_user_agent ~* "mobile") {
+        rewrite ^(.*)$ http://m.example.com$1 permanent;
+    }
+
+    location / {
+        proxy_pass http://backend_server;
+    }
+}
+```
+
+
+
+在多层代理中，如果需要根据某些条件将请求重定向到其他 URL，也可以使用 `rewrite` 指令。
+
+### 1. URL 规范化
+
+#### 去除多余的斜杠
+
+
+
+在处理用户输入的 URL 时，可能会出现多余的斜杠，为了保持 URL 的一致性，可使用 `rewrite` 去除多余斜杠。
+
+```nginx
+server {
+    listen 80;
+    server_name example.com;
+
+    rewrite ^/(.*)//(.*)$ /$1/$2 permanent;
+    location / {
+        # 其他配置
+    }
+}
+```
+
+#### 统一大小写
+
+
+
+为了避免因大小写不同而导致的资源重复，可将所有请求的 URL 转换为小写或大写。
+
+```nginx
+server {
+    listen 80;
+    server_name example.com;
+
+    if ($request_uri ~* [A-Z]) {
+        rewrite ^(.*)$ $1 last;
+    }
+    location / {
+        # 其他配置
+    }
+}
+```
+
+### 2. 实现 URL 重定向
+
+#### 永久重定向（301）
+
+
+
+当网站的 URL 结构发生永久性改变时，为了保证搜索引擎收录和用户体验，需要将旧的 URL 永久重定向到新的 URL。
+
+```nginx
+server {
+    listen 80;
+    server_name old.example.com;
+    rewrite ^/(.*)$ http://new.example.com/$1 permanent;
+}
+```
+
+#### 临时重定向（302）
+
+
+
+在网站进行临时维护或测试时，可将用户临时重定向到其他页面。
+
+```nginx
+server {
+    listen 80;
+    server_name example.com;
+    if ($date_local ~ "^(Mon|Tue|Wed|Thu|Fri)") {
+        rewrite ^(.*)$ http://temp.example.com/$1 redirect;
+    }
+    location / {
+        # 正常业务配置
+    }
+}
+```
+
+### 3. 隐藏真实的文件路径
+
+
+
+为了提高网站的安全性和可维护性，可使用 `rewrite` 隐藏真实的文件路径，对外提供友好的 URL。
+
+```nginx
+server {
+    listen 80;
+    server_name example.com;
+
+    location /products/ {
+        rewrite ^/products/([0-9]+)$ /product_detail.php?id=$1 last;
+    }
+}
+```
+
+
+
+在这个例子中，用户访问 `http://example.com/products/123` 时，实际上会被重定向到 `http://example.com/product_detail.php?id=123`。
+
+### 4. 多版本网站切换
+
+
+
+根据用户的设备类型、语言偏好等条件，将用户重定向到不同版本的网站。
+
+#### 根据设备类型切换
+
+```nginx
+server {
+    listen 80;
+    server_name example.com;
+
+    if ($http_user_agent ~* "mobile") {
+        rewrite ^(.*)$ http://m.example.com$1 permanent;
+    }
+    location / {
+        # 桌面版网站配置
+    }
+}
+```

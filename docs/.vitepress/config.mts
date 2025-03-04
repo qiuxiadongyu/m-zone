@@ -1,6 +1,6 @@
 //.vitepress/config.mts
 import { defineConfig } from 'vitepress'
-import { sidebar, nav } from './configs'
+import { sidebar, nav, head } from './configs'
 export default defineConfig({
     title: 'M-ZONE', //标题
     description: '开发日常使用中所用到的日常提效工具、插件等', //描述
@@ -12,6 +12,7 @@ export default defineConfig({
     markdown: {
         lineNumbers: true
     },
+    head: head,
     themeConfig: {
         logo: '/logo-nobg.png', //显示在导航栏中网站标题之前的徽标文件。接受路径字符串或对象来为亮/暗模式设置不同的徽标。
         nav,
