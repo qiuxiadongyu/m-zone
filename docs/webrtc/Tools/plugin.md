@@ -3,5 +3,8 @@
 * Git Graph
 * Live Server
 * Remote - SSH
-
+* Prettier - Code formatter
+* ESLint
+* WSL
+* cline
 

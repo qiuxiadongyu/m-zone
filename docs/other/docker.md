@@ -158,3 +158,62 @@ docker rmi df1
    ```
 
    
+
+## 将运行中的容器打成镜像：
+
+```
+docker commit [OPTIONS] CONTAINER [REPOSITORY[:TAG]]
+```
+
+命令中的选项 `[OPTIONS]` 有如下候选：
+
+| Option | 功能                           |
+| ------ | ------------------------------ |
+| -a     | 指定新镜像作者                 |
+| -c     | 使用 Dockerfile 指令来创建镜像 |
+| -m     | 提交生成镜像的说明信息         |
+| -p     | 在 commit 时，将容器暂停       |
+
+例子：
+
+```
+docker commit -a "nathan" -m "create new img" eda05ad514f8 consul:v0
+```
+
+命令以容器为基础生成新的镜像 consul:v0，镜像 id 为 
+
+
+
+## 镜像打包
+
+**镜像打包为 tar 文件**
+
+```
+docker save [OPTIONS] IMAGE [IMAGE...]
+```
+
+OPTIONS 选项只有 `-o` 用于指定输出到的文件
+
+示例：
+
+```
+sudo docker save -o consul:v0.tar consul:v0
+```
+
+**从 tar 文件载入镜像**
+
+```
+docker load [OPTIONS]
+```
+
+OPTIONS 选项可选
+
+1. `-i` 用于指定载入的镜像文件
+2. `-q` 精简输出信息
+
+示例：
+
+```
+sudo docker load -i consul:v0.tar
+```
+
